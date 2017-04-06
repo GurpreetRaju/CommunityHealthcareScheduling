@@ -2,6 +2,12 @@
 Thumbs.db
 ehthumbs.db
 
+bin/
+.gitignore
+.classpath
+.settings/org.eclipse.jdt.core.prefs
+.project
+
 # Folder config file
 Desktop.ini
 
