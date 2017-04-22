@@ -167,5 +167,19 @@ public class view extends JFrame{
 		String[] title = {"R. ID", "Cost"};
 		table2 = new JTable(sheetTwo,title);		
 	}
+
+	public void clearOptimalPanel() {
+		// TODO Auto-generated method stub
+		if(optimalSol.getComponentCount()!=0){
+			optimalSol.removeAll();
+		}
+	}
+	public void clearBundlePanel() {
+		// TODO Auto-generated method stub
+		if(bundleInner.getComponentCount()!=0){
+			bundleInner.removeAll();
+			requestInner.removeAll();
+		}
+	}
 	
 }

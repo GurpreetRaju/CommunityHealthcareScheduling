@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import Model.BundleNode;
 import Model.XLSXReader;
+import Model.nurse;
 import Model.scheduling;
 import view.view;
 
@@ -25,11 +26,13 @@ public class controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-					BundleNode[] optimalSol = algo.schedule(readfile.getBundles(), readfile.getRequestPrices(), readfile.getSum());
+					myview.clearOptimalPanel();
+					BundleNode[] optimalSol = algo.schedule(readfile.getData(), readfile.getRequestPrices(), readfile.getSum());
 					for(BundleNode b : optimalSol){
 						System.out.println("Checkpoint 1");
 						myview.appendToOptimal("Nurse "+b.getNurse() + " Requests " + b.returnReqs() + " Cost " + b.getPrice());
 					}
+					myview.appendToOptimal(Double.toString(algo.getOptimalSum()));
 					myview.updateOptimalPanel();
 				
 			}
@@ -42,15 +45,19 @@ public class controller {
 				String file = myview.getFileAddress();
 				System.out.println("Reading Data from "+file);
 				readfile = new XLSXReader(file);
-				LinkedList<BundleNode> sheet2 = readfile.getBundles();
+				LinkedList<nurse> sheet2 = readfile.getData();
 				LinkedList<Double> sheet1 = readfile.getRequestPrices();
-				for(BundleNode b: sheet2){
-					myview.appendToBundles("Nurse "+b.getNurse() + " Requests " + b.returnReqs() + " Cost " + b.getPrice());
+				myview.clearBundlePanel();
+				for(nurse n: sheet2){
+					for(BundleNode b : n.getBundles()){
+						myview.appendToBundles("Nurse "+b.getNurse() + " Requests " + b.returnReqs() + " Cost " + b.getPrice());
+					}
 				}
 				myview.updateBundlePanel();
 				for(int i=0; i< sheet1.size();i++){
 					myview.appendToRequests("Request"+ i +" Cost "+ Double.toString(sheet1.get(i)));
 				}
+				
 				myview.updateRequestPanel();
 			}			
 		};

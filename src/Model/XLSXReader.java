@@ -22,7 +22,7 @@ public class XLSXReader{
  	private XSSFSheet firstSheet = null;
  	private XSSFSheet secondSheet = null;
  	private LinkedList<Double> requestPrices = new LinkedList<Double>();
- 	private LinkedList<BundleNode> bundles = new LinkedList<BundleNode>();
+ 	private LinkedList<nurse> nurses = new LinkedList<nurse>();
  	private Double sum = 0.0;
  	
  	public XLSXReader(){
@@ -82,9 +82,17 @@ public class XLSXReader{
 	 	String[] temp;
 	 		while (iterator.hasNext()) {
 				Row nextRow = iterator.next();
-				if(nextRow.getRowNum()==0 || nextRow.getRowNum()==1 ){
+				if(nextRow.getRowNum()==0){
 					continue; //just skip the rows if row number is 0 or 1
 		 		}
+				if(nextRow.getRowNum()==1 ){
+					
+					int n = nextRow.getLastCellNum()/2;
+					for(int x=1;x<=n;x++){	
+						nurses.add(new nurse(x));
+					}
+					continue;
+				}
 				//System.out.println("Row number "+nextRow.getRowNum());
 				Iterator<Cell> cellIterator = nextRow.cellIterator();
 				int nurse = 0;
@@ -98,6 +106,7 @@ public class XLSXReader{
 					}
 					else if((i%2)!=0){
 						nurse++;
+						
 						//System.out.print("Nurse :" + nurse);
 						if(cell.getCellType()== Cell.CELL_TYPE_BLANK){
 							//System.out.print("Cell Empty");
@@ -121,9 +130,11 @@ public class XLSXReader{
 					else if(cell.getCellType()!= Cell.CELL_TYPE_BLANK){
 						node.setPrice(cell.getNumericCellValue());
 						
-						//System.out.println("Price: " +node.getPrice());
+						//System.out.println(nurse);
 						//System.out.println(node.getPrice() + " ");
-						this.bundles.add(new BundleNode(node.getRequests(),node.getNurse(),node.getPrice()));
+						nurse nurs = this.nurses.get(nurse-1);
+						//System.out.println(nurs.getID());
+						nurs.addBundle(new BundleNode(node.getRequests(),node.getNurse(),node.getPrice()));
 //						System.out.println("adding price");
 					}
 					i++;
@@ -132,17 +143,25 @@ public class XLSXReader{
 	}
 	public void display(){
 		System.out.println("Result");
-		for(BundleNode b : this.bundles){
-			System.out.print("Nurse "+b.getNurse() + " Price " + b.getPrice() + " Requests ");
-			b.displayReqs();
+		for(nurse n : this.nurses){
+			for(BundleNode b: n.getBundles()){
+				System.out.println("Nurse "+ n.getID() + " Price " + b.getPrice() + " Requests " + b.returnReqs());
+			}
+		}
+	}
+	
+	private void displayRequests() {
+		// TODO Auto-generated method stub
+		for(Double d: requestPrices){
+			System.out.println(d);
 		}
 	}
 	
 	public LinkedList<Double> getRequestPrices(){
 		return this.requestPrices;
 	}
- 	public LinkedList<BundleNode> getBundles(){
- 		return this.bundles;
+ 	public LinkedList<nurse> getData(){
+ 		return this.nurses;
  	}
  	public Double getSum(){
  		return this.sum;
@@ -151,7 +170,9 @@ public class XLSXReader{
 	public static void main(String[] arg) throws IOException{
 		XLSXReader xlsfile = new XLSXReader();
 		//xlsfile.getFirstsheetData();
+		xlsfile.displayRequests();
 //		xlsfile.getSecondsheetData();
-		xlsfile.display();
+		//xlsfile.display();
 	}
+	
 }
