@@ -55,10 +55,23 @@ public class BundleNode{
 	}
 	
 	public void displayReqs(){
-		for(String req : requests){
+		for(String req : this.requests){
 			System.out.print(req + " ");
 		}
-		System.out.println(" ");
+		System.out.println("");
+	}
+	
+	public String returnReqs(){
+		String req1 = new String();
+		int i=0;
+		for(String req : this.requests){
+			if(i!=0){
+				req1+=", ";
+			}
+			req1+=req;
+			i++;
+		}
+		return req1;
 	}
 	
 	public boolean equals(Object o){

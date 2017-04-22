@@ -25,11 +25,27 @@ public class XLSXReader{
  	private LinkedList<BundleNode> bundles = new LinkedList<BundleNode>();
  	private Double sum = 0.0;
  	
- 	public XLSXReader() throws IOException{
- 		inputStream = new FileInputStream(new File(excelFilePath));
- 	 	workbook = new XSSFWorkbook(inputStream);
+ 	public XLSXReader(){
+ 		init();
+ 	}
+ 	
+ 	public XLSXReader(String newfile){
+ 		this.excelFilePath = newfile;
+ 		init();
+ 	}
+ 	
+ 	private void init(){
+ 		try {
+			inputStream = new FileInputStream(new File(excelFilePath));
+			workbook = new XSSFWorkbook(inputStream);
+ 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
  	 	firstSheet = (XSSFSheet) workbook.getSheetAt(0);
  	 	secondSheet = (XSSFSheet) workbook.getSheetAt(1);
+ 	 	this.getFirstsheetData();
+		this.getSecondsheetData();
  	}
  	
 	public void getFirstsheetData(){
@@ -69,25 +85,34 @@ public class XLSXReader{
 				if(nextRow.getRowNum()==0 || nextRow.getRowNum()==1 ){
 					continue; //just skip the rows if row number is 0 or 1
 		 		}
+				//System.out.println("Row number "+nextRow.getRowNum());
 				Iterator<Cell> cellIterator = nextRow.cellIterator();
 				int nurse = 0;
 				int i = 0;
 				BundleNode node = new BundleNode();
 				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
-					
 					if(i==0){
 //						System.out.println("nothing to read");
+						
 					}
 					else if((i%2)!=0){
 						nurse++;
-						if(cell.getCellType()!= Cell.CELL_TYPE_BLANK){
+						//System.out.print("Nurse :" + nurse);
+						if(cell.getCellType()== Cell.CELL_TYPE_BLANK){
+							//System.out.print("Cell Empty");
+							
+						}
+						else{
 							node.setNurse(nurse);
 							//System.out.print(node.getNurse() + " ");
 							temp = cell.getStringCellValue().split(",");
+							
 							String[] temp2 = new String[temp.length];
+							//System.out.print(" Requests: ");
 							for(int i1=0 ; i1< temp.length ; i1++){
 								temp2[i1] = temp[i1].replaceAll("\\s+","");
+								//System.out.print(temp2[i1] + " ");
 							}
 							node.setRequests(temp2);
 							//System.out.print(node.getRequests()[0] +" ");
@@ -95,6 +120,8 @@ public class XLSXReader{
 					}
 					else if(cell.getCellType()!= Cell.CELL_TYPE_BLANK){
 						node.setPrice(cell.getNumericCellValue());
+						
+						//System.out.println("Price: " +node.getPrice());
 						//System.out.println(node.getPrice() + " ");
 						this.bundles.add(new BundleNode(node.getRequests(),node.getNurse(),node.getPrice()));
 //						System.out.println("adding price");
@@ -106,7 +133,8 @@ public class XLSXReader{
 	public void display(){
 		System.out.println("Result");
 		for(BundleNode b : this.bundles){
-			System.out.println(b.getNurse() + " " + b.getPrice() + " " + b.getRequests()[0]);
+			System.out.print("Nurse "+b.getNurse() + " Price " + b.getPrice() + " Requests ");
+			b.displayReqs();
 		}
 	}
 	
@@ -119,11 +147,11 @@ public class XLSXReader{
  	public Double getSum(){
  		return this.sum;
  	}
-	
+ 	 	
 	public static void main(String[] arg) throws IOException{
 		XLSXReader xlsfile = new XLSXReader();
 		//xlsfile.getFirstsheetData();
-		xlsfile.getSecondsheetData();
+//		xlsfile.getSecondsheetData();
 		xlsfile.display();
 	}
 }

@@ -5,7 +5,7 @@ import Model.BundleNode;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class scheduling {
+public class scheduling{
 		
 	public BundleNode[] schedule(LinkedList<BundleNode> allBundles, LinkedList<Double> reqPrices, Double sum){
 		
@@ -14,34 +14,15 @@ public class scheduling {
 			ArrayList<BundleNode> tempSol = new ArrayList<BundleNode>();
 			ArrayList<Integer> nurse = new ArrayList<Integer>();
 			ArrayList<String> requests = new ArrayList<String>();
-			//System.out.println("add node to tempSol");
-			//bundle.display();
 			tempSol.add(bundle);
 			requests = addRequestsToList(bundle.getRequests(), requests);
-//			for(String s : requests){
-//				System.out.println(s);
-//			}
 			nurse.add(bundle.getNurse());
 			for(BundleNode tempBundle : allBundles){
 				if(!(tempSol.contains(tempBundle)) && !(nurse.contains(tempBundle.getNurse())) && checkReqExistInList(tempBundle.getRequests(),requests)){
 					tempSol.add(tempBundle);
 					requests = addRequestsToList(tempBundle.getRequests(), requests);
 					nurse.add(tempBundle.getNurse());
-					//System.out.println(" add node to tempSol");
-					//tempBundle.display();
 				}
-//				else{
-//					if(nurse.contains(tempBundle.getNurse())){
-//						for(int i : nurse){
-//							System.out.print(" "+i);
-//						}
-//						System.out.println("Bundle already traversed for nurse " + tempBundle.getNurse());
-//					}
-//					else if(!checkReqExistInList(tempBundle.getRequests(),requests)){
-//						System.out.println("Request already exist for ");
-//						tempBundle.display();
-//					}
-//				}
 			}
 			for(int i=1; i<=reqPrices.size(); i++){
 				if(!requests.contains(Integer.toString(i))){
@@ -49,24 +30,27 @@ public class scheduling {
 					String[] request = new String[1];
 					request[0] = Integer.toString(i);
 					BundleNode newBundle = new BundleNode(request, reqPrices.get(i-1));
-					//System.out.println("add node to tempSol");
-					//newBundle.display();
 					tempSol.add(newBundle);
 				}
 			}
 			possibleSol.add(tempSol.toArray(new BundleNode[tempSol.size()]));
 		}
+				
 		Double oSum = sum;
 		BundleNode[] oSol = null;
 		for(BundleNode[] tempsol : possibleSol){
 			Double tempsum = 0.0;
 			for(BundleNode bundle : tempsol){
+				System.out.print("Bundle Nurse: "+ bundle.getNurse() +" Price: " + String.valueOf(bundle.getPrice()) + " Requests: ");
+				bundle.displayReqs();
 				tempsum = tempsum + bundle.getPrice();
 			}
+			System.out.print(tempsum);
 			if(tempsum<oSum){
 				oSum = tempsum;
 				oSol = tempsol;
 			}
+			System.out.println("");
 		}
 		
 		System.out.println("Optimal Solution "+oSum);
