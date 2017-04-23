@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.ArrayList;
+
 public class BundleNode{
 	private String[] requests;
 	private int nurse = 0;
@@ -83,4 +85,6 @@ public class BundleNode{
 		}
 		return false;
 	}
+	
+	
 }
