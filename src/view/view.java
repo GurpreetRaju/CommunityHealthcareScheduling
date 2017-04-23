@@ -140,7 +140,7 @@ public class view extends JFrame{
 		JPanel tempPanel = new JPanel();
 		tempPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		tempPanel.add(new JLabel(data));
-		requestInner.add(new JLabel(data));
+		requestInner.add(tempPanel);
 	}
 	public void updateRequestPanel(){
 		requestInner.revalidate();
@@ -152,7 +152,7 @@ public class view extends JFrame{
 		JPanel tempPanel = new JPanel();
 		tempPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		tempPanel.add(new JLabel(data));
-		optimalSol.add(new JLabel(data));
+		optimalSol.add(tempPanel);
 	}
 	public void updateOptimalPanel(){
 		optimalSol.revalidate();
@@ -160,12 +160,17 @@ public class view extends JFrame{
 		optimalSol.updateUI();
 	}
 
-	public void setTable1(String[][] sheetTwo, String[] strings) {
+	public void setTable1(String[][] sheetTwo) {
+		String[] strings = {"Nurse","Requests","Price"};
 		table1 = new JTable(sheetTwo , strings);
+		bundleInner.add(table1);
+		updateBundlePanel();
 	}
-	public void setTable2(String[][] sheetTwo) {
+	public void setTable2(String[][] sheetone) {
 		String[] title = {"R. ID", "Cost"};
-		table2 = new JTable(sheetTwo,title);		
+		table2 = new JTable(sheetone,title);
+		requestInner.add(table2);
+		updateRequestPanel();
 	}
 
 	public void clearOptimalPanel() {
@@ -181,5 +186,4 @@ public class view extends JFrame{
 			requestInner.removeAll();
 		}
 	}
-	
 }

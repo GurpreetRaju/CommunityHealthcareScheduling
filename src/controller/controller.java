@@ -27,7 +27,8 @@ public class controller {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 					myview.clearOptimalPanel();
-					BundleNode[] optimalSol = algo.schedule(readfile.getData(), readfile.getRequestPrices(), readfile.getSum());
+					algo.schedule(readfile.getData(), readfile.getRequestPrices(), readfile.getSum());
+					BundleNode[] optimalSol = algo.getSolution();
 					for(BundleNode b : optimalSol){
 						System.out.println("Checkpoint 1");
 						myview.appendToOptimal("Nurse "+b.getNurse() + " Requests " + b.returnReqs() + " Cost " + b.getPrice());
@@ -47,22 +48,35 @@ public class controller {
 				readfile = new XLSXReader(file);
 				LinkedList<nurse> sheet2 = readfile.getData();
 				LinkedList<Double> sheet1 = readfile.getRequestPrices();
+				ArrayList<String[]> temp = new ArrayList<String[]>();
 				myview.clearBundlePanel();
 				for(nurse n: sheet2){
 					for(BundleNode b : n.getBundles()){
-						myview.appendToBundles("Nurse "+b.getNurse() + " Requests " + b.returnReqs() + " Cost " + b.getPrice());
+						String[] tempBundle = {Integer.toString(n.getID()),b.returnReqs(),Double.toString(b.getPrice())};
+						temp.add(tempBundle);
 					}
 				}
-				myview.updateBundlePanel();
+				myview.setTable1(toMultiDArray(temp));
+				temp.clear();
 				for(int i=0; i< sheet1.size();i++){
-					myview.appendToRequests("Request"+ i +" Cost "+ Double.toString(sheet1.get(i)));
+					String[] tempBundle = {Integer.toString(i), Double.toString(sheet1.get(i))};
+					temp.add(tempBundle);
 				}
-				
-				myview.updateRequestPanel();
+				myview.setTable2(toMultiDArray(temp));
+				temp.clear();
 			}			
 		};
 		this.myview.readDataAction(readDataListener);
 		this.myview.setVisible(true);
+	}
+	
+	private String[][] toMultiDArray(ArrayList<String[]> newList){
+		int x = newList.size();
+		String[][] finalstring = new String[x][];
+		for(int i=0; i<x; i++){
+			finalstring[i] = newList.get(i);
+		}
+		return finalstring;
 	}
 	
 //	public Object[][] convertToTable(){
