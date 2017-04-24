@@ -2,7 +2,6 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -25,26 +24,22 @@ public class controller {
 		runAlgoListener= new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-					myview.clearOptimalPanel();
-					algo.schedule(readfile.getData(), readfile.getRequestPrices(), readfile.getSum());
-					BundleNode[] optimalSol = algo.getSolution();
-					for(BundleNode b : optimalSol){
-						System.out.println("Checkpoint 1");
-						myview.appendToOptimal("Nurse "+b.getNurse() + " Requests " + b.returnReqs() + " Cost " + b.getPrice());
-					}
-					myview.appendToOptimal(Double.toString(algo.getOptimalSum()));
-					myview.updateOptimalPanel();
-				
+				myview.clearOptimalPanel();
+				algo.schedule(readfile.getData(), readfile.getRequestPrices(), readfile.getSum());
+				BundleNode[] optimalSol = algo.getSolution();
+				for(BundleNode b : optimalSol){
+					myview.appendToOptimal("Nurse "+b.getNurse() + " Requests " + b.returnReqs() + " Cost " + b.getPrice());
+				}
+				myview.appendToOptimal(Double.toString(algo.getOptimalSum()));
+				myview.updateOptimalPanel();
 			}
 		};
 		this.myview.runAlgoAction(runAlgoListener);
 		readDataListener = new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				String file = myview.getFileAddress();
-				System.out.println("Reading Data from "+file);
+				//System.out.println("Reading Data from "+file);
 				readfile = new XLSXReader(file);
 				LinkedList<nurse> sheet2 = readfile.getData();
 				LinkedList<Double> sheet1 = readfile.getRequestPrices();

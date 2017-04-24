@@ -76,21 +76,6 @@ public class nurse {
 		}
 		return false;
 	}
-//	
-//	public static void main(String[] arg){
-//		nurse n = new nurse(1);
-//		String[] req1 = {"5","3","2"};
-//		n.addBundle(new BundleNode(req1,50.0));
-//		String[] req2 = {"1","3","2","6"};
-//		n.addBundle(new BundleNode(req2,58.0));
-//		String[] req3 = {"1","3","4"};
-//		n.addBundle(new BundleNode(req3,40.0));
-//		String[] req4 = {"2","4"};
-//		n.addBundle(new BundleNode(req4,30.0));
-//		ArrayList<String> newReqList = new ArrayList<String>();
-//		newReqList.add("4");
-//		BundleNode b = n.getBestCompatibleBundle(newReqList);
-//		b.displayReqs();
-//	}
+
 }
 

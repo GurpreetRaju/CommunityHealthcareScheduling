@@ -14,7 +14,7 @@ public class scheduling{
 	public void schedule(LinkedList<nurse> nurses, LinkedList<Double> reqPrices, Double sum){
 		optimalSum = sum;
 		
-		System.out.println(nurses.size());
+		//System.out.println(nurses.size());
 		for(nurse nurs : nurses){
 		//for(int x=0; x<1; x++){
 			//nurse nurs = nurses.get(x);
@@ -27,16 +27,15 @@ public class scheduling{
 				osum += bundle.getPrice();
 				requests = addRequestsToList(bundle.getRequests(), requests);
 				nurse.add(nurs);
-				System.out.println("Solution nurse "+nurs.getID()+" Request "+bundle.returnReqs()+" Cost "+bundle.getPrice());
+				//System.out.println("Solution nurse "+nurs.getID()+" Request "+bundle.returnReqs()+" Cost "+bundle.getPrice());
 				for(nurse nurc : nurses){
 					if(!nurse.contains(nurc)){
 						BundleNode tempBundle1 = nurc.getBestCompatibleBundle(requests);
 						if(tempBundle1!=null){
 							requests = addRequestsToList(tempBundle1.getRequests(), requests);
-							System.out.println("nurse "+nurc.getID()+" Request "+tempBundle1.returnReqs()+" Cost "+tempBundle1.getPrice());
+							//System.out.println("nurse "+nurc.getID()+" Request "+tempBundle1.returnReqs()+" Cost "+tempBundle1.getPrice());
 							tempSol.add(tempBundle1);
 							osum += tempBundle1.getPrice();
-							
 							nurse.add(nurc);
 						}
 					}
@@ -46,12 +45,12 @@ public class scheduling{
 						requests.add(Integer.toString(i));
 						String[] request = {Integer.toString(i)};
 						BundleNode newBundle = new BundleNode(request, reqPrices.get(i-1));
-						System.out.println("nurse "+newBundle.getNurse()+" Request "+newBundle.returnReqs()+" Cost "+newBundle.getPrice());
+						//System.out.println("nurse "+newBundle.getNurse()+" Request "+newBundle.returnReqs()+" Cost "+newBundle.getPrice());
 						tempSol.add(newBundle);
 						osum += newBundle.getPrice();
 					}
 				}
-				System.out.println(osum);
+				//System.out.println(osum);
 				if(osum<this.optimalSum){
 					this.possibleSol = tempSol;
 					this.optimalSum = osum;

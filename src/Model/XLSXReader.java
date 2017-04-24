@@ -2,9 +2,7 @@ package Model;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -39,7 +37,6 @@ public class XLSXReader{
 			inputStream = new FileInputStream(new File(excelFilePath));
 			workbook = new XSSFWorkbook(inputStream);
  		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
  	 	firstSheet = (XSSFSheet) workbook.getSheetAt(0);
@@ -59,7 +56,6 @@ public class XLSXReader{
 						Cell cell = cellIterator.next();
 						if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC && i==1){
 							requestPrices.add(cell.getNumericCellValue());
-							//System.out.println(cell.getNumericCellValue());
 							i=0;
 							break;
 						}
@@ -70,11 +66,9 @@ public class XLSXReader{
 	}
 	
 	private void calculateTotalPrice() {
-		
 		for(Double reqPrice : requestPrices){
 			sum += reqPrice;
 		}
-		
 	}
 
 	public void getSecondsheetData(){
@@ -86,14 +80,12 @@ public class XLSXReader{
 					continue; //just skip the rows if row number is 0 or 1
 		 		}
 				if(nextRow.getRowNum()==1 ){
-					
 					int n = nextRow.getLastCellNum()/2;
 					for(int x=1;x<=n;x++){	
 						nurses.add(new nurse(x));
 					}
 					continue;
 				}
-				//System.out.println("Row number "+nextRow.getRowNum());
 				Iterator<Cell> cellIterator = nextRow.cellIterator();
 				int nurse = 0;
 				int i = 0;
@@ -101,41 +93,28 @@ public class XLSXReader{
 				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
 					if(i==0){
-//						System.out.println("nothing to read");
 						
 					}
 					else if((i%2)!=0){
 						nurse++;
-						
-						//System.out.print("Nurse :" + nurse);
 						if(cell.getCellType()== Cell.CELL_TYPE_BLANK){
-							//System.out.print("Cell Empty");
 							
 						}
 						else{
 							node.setNurse(nurse);
-							//System.out.print(node.getNurse() + " ");
 							temp = cell.getStringCellValue().split(",");
 							
 							String[] temp2 = new String[temp.length];
-							//System.out.print(" Requests: ");
 							for(int i1=0 ; i1< temp.length ; i1++){
 								temp2[i1] = temp[i1].replaceAll("\\s+","");
-								//System.out.print(temp2[i1] + " ");
 							}
 							node.setRequests(temp2);
-							//System.out.print(node.getRequests()[0] +" ");
 						}
 					}
 					else if(cell.getCellType()!= Cell.CELL_TYPE_BLANK){
 						node.setPrice(cell.getNumericCellValue());
-						
-						//System.out.println(nurse);
-						//System.out.println(node.getPrice() + " ");
 						nurse nurs = this.nurses.get(nurse-1);
-						//System.out.println(nurs.getID());
 						nurs.addBundle(new BundleNode(node.getRequests(),node.getNurse(),node.getPrice()));
-//						System.out.println("adding price");
 					}
 					i++;
 				}
@@ -151,7 +130,6 @@ public class XLSXReader{
 	}
 	
 	private void displayRequests() {
-		// TODO Auto-generated method stub
 		for(Double d: requestPrices){
 			System.out.println(d);
 		}
@@ -166,13 +144,5 @@ public class XLSXReader{
  	public Double getSum(){
  		return this.sum;
  	}
- 	 	
-	public static void main(String[] arg) throws IOException{
-		XLSXReader xlsfile = new XLSXReader();
-		//xlsfile.getFirstsheetData();
-		xlsfile.displayRequests();
-//		xlsfile.getSecondsheetData();
-		//xlsfile.display();
-	}
-	
+
 }

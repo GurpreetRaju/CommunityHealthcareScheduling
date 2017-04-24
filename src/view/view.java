@@ -19,6 +19,10 @@ import javax.swing.SpringLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class view extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton readData;
 	private JButton runAlgo;
 	private JTextField fileAddress;
@@ -174,13 +178,11 @@ public class view extends JFrame{
 	}
 
 	public void clearOptimalPanel() {
-		// TODO Auto-generated method stub
 		if(optimalSol.getComponentCount()!=0){
 			optimalSol.removeAll();
 		}
 	}
 	public void clearBundlePanel() {
-		// TODO Auto-generated method stub
 		if(bundleInner.getComponentCount()!=0){
 			bundleInner.removeAll();
 			requestInner.removeAll();
